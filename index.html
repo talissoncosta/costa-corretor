@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Costa corretor de imóveis| Venda de Imóveis Rurais e Urbanos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .property-card:hover .property-overlay {
+            opacity: 1;
+        }
+        .dashboard-menu li.active {
+            background-color: #f3f4f6;
+            border-left: 4px solid #3b82f6;
+        }
+        .chat-window {
+            height: calc(100vh - 150px);
+        }
+        #map {
+            height: 400px;
+        }
+        .custom-shadow {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-home text-blue-500 text-2xl mr-2"></i>
+                        <span class="text-xl font-bold text-gray-800">Terra Nova</span>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="#" class="border-blue-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Início</a>
+                        <a href="#properties" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Imóveis</a>
+                        <a href="#services" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Serviços</a>
+                        <a href="#contact" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Contato</a>
+                    </div>
+                </div>
+                <div class="hidden sm:ml-6 sm:flex sm:items-center">
+                    <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                        <i class="fas fa-user mr-2"></i>Área do Cliente
+                    </button>
+                    <button onclick="openAdminPanel()" class="ml-4 bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                        <i class="fas fa-tools mr-2"></i>Painel Admin
+                    </button>
+                </div>
+                <div class="-mr-2 flex items-center sm:hidden">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="relative bg-blue-700">
+        <div class="absolute inset-0">
+            <img class="w-full h-full object-cover opacity-30" src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1473&q=80" alt="">
+        </div>
+        <div class="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
+            <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
+                Encontre o imóvel dos seus sonhos
+            </h1>
+            <p class="mt-6 max-w-3xl text-xl text-blue-100">
+                Mais de 10.000 propriedades urbanas e rurais em todo o país. Sua nova casa ou investimento está aqui.
+            </p>
+            <div class="mt-10 sm:flex">
+                <div class="w-full sm:max-w-xs">
+                    <label for="search" class="sr-only">Buscar</label>
+                    <div class="relative">
+                        <input id="search" name="search" type="text" class="block w-full rounded-md border-transparent px-5 py-3 text-base text-gray-900 placeholder-gray-500 shadow-sm focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-500" placeholder="Digite cidade, bairro...">
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+                <button class="mt-3 w-full flex items-center justify-center rounded-md border border-transparent bg-blue-500 px-5 py-3 text-base font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:flex-shrink-0">
+                    <i class="fas fa-search mr-2"></i> Buscar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Property Categories -->
+    <div class="bg-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    Tipos de Imóveis
+                </h2>
+                <p class="mt-4 max-w-2xl text-xl text-gray-500 mx-auto">
+                    Encontre o tipo de propriedade que melhor atende às suas necessidades
+                </p>
+            </div>
+            <div class="mt-10">
+                <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+                    <div class="pt-6">
+                        <div class="flow-root bg-gray-50 rounded-lg px-6 pb-8 h-full">
+                            <div class="-mt-6">
+                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white mx-auto">
+                                    <i class="fas fa-city text-xl"></i>
+                                </div>
+                                <h3 class="mt-8 text-lg font-medium text-gray-900 text-center">Urbanos</h3>
+                                <p class="mt-5 text-base text-gray-500">
+                                    Apartamentos, casas, terrenos e lojas nas melhores localizações urbanas.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pt-6">
+                        <div class="flow-root bg-gray-50 rounded-lg px-6 pb-8 h-full">
+                            <div class="-mt-6">
+                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-green-500 text-white mx-auto">
+                                    <i class="fas fa-tractor text-xl"></i>
+                                </div>
+                                <h3 class="mt-8 text-lg font-medium text-gray-900 text-center">Rurais</h3>
+                                <p class="mt-5 text-base text-gray-500">
+                                    Fazendas, sítios, chácaras e terrenos rurais para produção ou lazer.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pt-6">
+                        <div class="flow-root bg-gray-50 rounded-lg px-6 pb-8 h-full">
+                            <div class="-mt-6">
+                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-yellow-500 text-white mx-auto">
+                                    <i class="fas fa-building text-xl"></i>
+                                </div>
+                                <h3 class="mt-8 text-lg font-medium text-gray-900 text-center">Comerciais</h3>
+                                <p class="mt-5 text-base text-gray-500">
+                                    Galpões, prédios comerciais e salas para escritórios em ótimas localizações.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pt-6">
+                        <div class="flow-root bg-gray-50 rounded-lg px-6 pb-8 h-full">
+                            <div class="-mt-6">
+                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-500 text-white mx-auto">
+                                    <i class="fas fa-home text-xl"></i>
+                                </div>
+                                <h3 class="mt-8 text-lg font-medium text-gray-900 text-center">Luxo</h3>
+                                <p class="mt-5 text-base text-gray-500">
+                                    Propriedades exclusivas e de alto padrão para clientes exigentes.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Properties -->
+    <div id="properties" class="bg-gray-50 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    Destaques
+                </h2>
+                <p class="mt-4 max-w-2xl text-xl text-gray-500 mx-auto">
+                    Confira nossas melhores propriedades disponíveis
+                </p>
+            </div>
+            <div class="mt-10 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
+                <!-- Property 1 -->
+                <div class="group relative bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition duration-300">
+                    <div class="relative h-60 w-full overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Casa de luxo" class="w-full h-full object-cover">
+                        <div class="absolute top-3 left-3 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded">
+                            <i class="fas fa-star mr-1"></i> Destaque
+                        </div>
+                        <div class="absolute top-3 right-3 bg-white text-gray-800 text-xs font-bold px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-camera mr-1 text-blue-500"></i> 12
+                        </div>
+                        <div class="property-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 transition duration-300">
+                            <button class="bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-blue-600 hover:text-white transition duration-300">
+                                <i class="fas fa-eye mr-2"></i> Ver detalhes
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-900">Mansão à venda</h3>
+                                <p class="text-gray-600 mt-1 flex items-center">
+                                    <i class="fas fa-map-marker-alt text-blue-500 mr-2"></i> 
+                                    Alphaville, Barueri - SP
+                                </p>
+                            </div>
+                            <div class="bg-blue-50 text-blue-800 px-2 py-1 rounded text-sm font-bold">
+                                R$ 5.200.000
+                            </div>
+                        </div>
+                        <div class="mt-4 border-t border-gray-200 pt-3 flex justify-between text-sm text-gray-500">
+                            <div class="flex items-center">
+                                <i class="fas fa-bed text-blue-500 mr-1"></i>
+                                <span>5</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-bath text-blue-500 mr-1"></i>
+                                <span>4</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-car text-blue-500 mr-1"></i>
+                                <span>3</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-ruler-combined text-blue-500 mr-1"></i>
+                                <span>680m²</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Property 2 -->
+                <div class="group relative bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition duration-300">
+                    <div class="relative h-60 w-full overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Apartamento" class="w-full h-full object-cover">
+                        <div class="absolute top-3 left-3 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
+                            <i class="fas fa-bolt mr-1"></i> Novo
+                        </div>
+                        <div class="absolute top-3 right-3 bg-white text-gray-800 text-xs font-bold px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-camera mr-1 text-blue-500"></i> 8
+                        </div>
+                        <div class="property-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 transition duration-300">
+                            <button class="bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-blue-600 hover:text-white transition duration-300">
+                                <i class="fas fa-eye mr-2"></i> Ver detalhes
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-900">Apartamento duplex</h3>
+                                <p class="text-gray-600 mt-1 flex items-center">
+                                    <i class="fas fa-map-marker-alt text-blue-500 mr-2"></i> 
+                                    Moema, São Paulo - SP
+                                </p>
+                            </div>
+                            <div class="bg-blue-50 text-blue-800 px-2 py-1 rounded text-sm font-bold">
+                                R$ 1.850.000
+                            </div>
+                        </div>
+                        <div class="mt-4 border-t border-gray-200 pt-3 flex justify-between text-sm text-gray-500">
+                            <div class="flex items-center">
+                                <i class="fas fa-bed text-blue-500 mr-1"></i>
+                                <span>3</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-bath text-blue-500 mr-1"></i>
+                                <span>2</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-car text-blue-500 mr-1"></i>
+                                <span>2</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-ruler-combined text-blue-500 mr-1"></i>
+                                <span>120m²</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Property 3 -->
+                <div class="group relative bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition duration-300">
+                    <div class="relative h-60 w-full overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Fazenda" class="w-full h-full object-cover">
+                        <div class="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                            <i class="fas fa-fire mr-1"></i> Oportunidade
+                        </div>
+                        <div class="absolute top-3 right-3 bg-white text-gray-800 text-xs font-bold px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-camera mr-1 text-blue-500"></i> 15
+                        </div>
+                        <div class="property-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 transition duration-300">
+                            <button class="bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-blue-600 hover:text-white transition duration-300">
+                                <i class="fas fa-eye mr-2"></i> Ver detalhes
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-900">Fazenda produtiva</h3>
+                                <p class="text-gray-600 mt-1 flex items-center">
+                                    <i class="fas fa-map-marker-alt text-blue-500 mr-2"></i> 
+                                    Ituverava, São Paulo - SP
+                                </p>
+                            </div>
+                            <div class="bg-blue-50 text-blue-800 px-2 py-1 rounded text-sm font-bold">
+                                R$ 3.750.000
+                            </div>
+                        </div>
+                        <div class="mt-4 border-t border-gray-200 pt-3 flex justify-between text-sm text-gray-500">
+                            <div class="flex items-center">
+                                <i class="fas fa-bed text-blue-500 mr-1"></i>
+                                <span>6</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-bath text-blue-500 mr-1"></i>
+                                <span>4</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-tractor text-blue-500 mr-1"></i>
+                                <span>2</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-ruler-combined text-blue-500 mr-1"></i>
+                                <span>120ha</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-10 text-center">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition duration-300">
+                    <i class="fas fa-list mr-2"></i> Ver todos os imóveis
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Services -->
+    <div id="services" class="bg-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    Nossos Serviços
+                </h2>
+                <p class="mt-4 max-w-2xl text-xl text-gray-500 mx-auto">
+                    Oferecemos soluções completas para compra, venda e administração de imóveis
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <div class="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition duration-300">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
+                        <i class="fas fa-home text-xl"></i>
+                    </div>
+                    <h3 class="mt-6 text-lg font-medium text-gray-900">Avaliação de Imóveis</h3>
+                    <p class="mt-2 text-base text-gray-500">
+                        Avaliação profissional e precisa do valor de mercado do seu imóvel, com relatório detalhado.
+                    </p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition duration-300">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-green-500 text-white">
+                        <i class="fas fa-handshake text-xl"></i>
+                    </div>
+                    <h3 class="mt-6 text-lg font-medium text-gray-900">Intermediação de Negócios</h3>
+                    <p class="mt-2 text-base text-gray-500">
+                        Atuamos como intermediários em toda a negociação, garantindo segurança e transparência.
+                    </p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition duration-300">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-500 text-white">
+                        <i class="fas fa-file-contract text-xl"></i>
+                    </div>
+                    <h3 class="mt-6 text-lg font-medium text-gray-900">Assessoria Jurídica</h3>
+                    <p class="mt-2 text-base text-gray-500">
+                        Suporte jurídico especializado em todas as etapas da compra, venda ou locação de imóveis.
+                    </p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition duration-300">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-yellow-500 text-white">
+                        <i class="fas fa-camera text-xl"></i>
+                    </div>
+                    <h3 class="mt-6 text-lg font-medium text-gray-900">Fotografia Profissional</h3>
+                    <p class="mt-2 text-base text-gray-500">
+                        Produção de fotos e vídeos profissionais para valorizar seu imóvel e atrair mais compradores.
+                    </p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition duration-300">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-red-500 text-white">
+                        <i class="fas fa-search-dollar text-xl"></i>
+                    </div>
+                    <h3 class="mt-6 text-lg font-medium text-gray-900">Consultoria de Investimentos</h3>
+                    <p class="mt-2 text-base text-gray-500">
+                        Análise de mercado e indicação das melhores oportunidades de investimento imobiliário.
+                    </p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition duration-300">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                        <i class="fas fa-building text-xl"></i>
+                    </div>
+                    <h3 class="mt-6 text-lg font-medium text-gray-900">Administração de Imóveis</h3>
+                    <p class="mt-2 text-base text-gray-500">
+                        Gestão completa do seu imóvel, incluindo cobrança de aluguel, manutenção e relacionamento com inquilinos.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="bg-blue-700 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+                    O que nossos clientes dizem
+                </h2>
+            </div>
+            <div class="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/32.jpg" alt="">
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-sm font-bold text-gray-900">Ana Carolina</h4>
+                            <div class="flex mt-1">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mt-4 text-gray-600 italic">
+                        "Comprei meu apartamento com a Terra Nova e fui muito bem atendida. A equipe foi extremamente profissional e atenciosa em todas as etapas do processo."
+                    </p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/45.jpg" alt="">
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-sm font-bold text-gray-900">Roberto Almeida</h4>
+                            <div class="flex mt-1">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mt-4 text-gray-600 italic">
+                        "Vendi minha fazenda através da Terra Nova e o processo foi muito tranquilo. Eles encontraram o comprador perfeito em menos de 2 meses."
+                    </p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/68.jpg" alt="">
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-sm font-bold text-gray-900">Fernanda Oliveira</h4>
+                            <div class="flex mt-1">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star-half-alt text-yellow-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mt-4 text-gray-600 italic">
+                        "Estou muito satisfeita com o serviço de administração de imóveis. Eles cuidam de tudo e eu não preciso me preocupar com nada. Recomendo!"
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact -->
+    <div id="contact" class="bg-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:grid lg:grid-cols-2 lg:gap-8">
+                <div>
+                    <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                        Entre em contato
+                    </h2>
+                    <p class="mt-3 text-xl text-gray-500">
+                        Tem dúvidas ou quer saber mais sobre nossos serviços? Preencha o formulário ou fale conosco por um dos canais abaixo.
+                    </p>
+                    <div class="mt-8">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
+                                    <i class="fas fa-phone-alt"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-900">Telefone</h3>
+                                <p class="mt-1 text-base text-gray-500">
+                                    (11) 1234-5678
+                                </p>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex items-start">
+                            <div class="flex-shrink-0">
+                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-900">Email</h3>
+                                <p class="mt-1 text-base text-gray-500">
+                                    contato@terranova.com.br
+                                </p>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex items-start">
+                            <div class="flex-shrink-0">
+                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-900">Endereço</h3>
+                                <p class="mt-1 text-base text-gray-500">
+                                    Av. Paulista, 1000 - São Paulo/SP
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-12 lg:mt-0">
+                    <div class="bg-white shadow-lg rounded-lg p-6">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Envie sua mensagem</h3>
+                        <form class="space-y-6">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-700">Nome completo</label>
+                                <div class="mt-1">
+                                    <input type="text" name="name" id="name" autocomplete="name" class="py-3 px-4 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                                <div class="mt-1">
+                                    <input type="email" name="email" id="email" autocomplete="email" class="py-3 px-4 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="phone" class="block text-sm font-medium text-gray-700">Telefone</label>
+                                <div class="mt-1">
+                                    <input type="text" name="phone" id="phone" autocomplete="tel" class="py-3 px-4 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="subject" class="block text-sm font-medium text-gray-700">Assunto</label>
+                                <div class="mt-1">
+                                    <select id="subject" name="subject" class="py-3 px-4 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md">
+                                        <option>Selecione um assunto</option>
+                                        <option>Informações sobre imóveis</option>
+                                        <option>Agendar visita</option>
+                                        <option>Avaliação de imóvel</option>
+                                        <option>Administração de imóveis</option>
+                                        <option>Outros</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="message" class="block text-sm font-medium text-gray-700">Mensagem</label>
+                                <div class="mt-1">
+                                    <textarea id="message" name="message" rows="4" class="py-3 px-4 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md"></textarea>
+                                </div>
+                            </div>
+                            <div>
+                                <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                    Enviar mensagem
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map -->
+    <div class="bg-gray-100">
+        <div id="map" class="w-full"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-300 tracking-wider uppercase">Imóveis</h3>
+                    <ul class="mt-4 space-y-4">
+                        <li><a href="#" class="text-base text-gray-400 hover:text-white">Comprar</a></li>
+                        <li><a href="#" class="text-base text-gray-400 hover:text-white">Vender</a></li>
+                        <li><a href="#" class="text-base text-gray-400 hover:text-white">Alugar</a></li>
+                        <li><a href="#" class="text-base text-gray-400 hover:text-white">Lançamentos</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-300 tracking-wider uppercase">Serviços</h3>
+                    <ul class="mt-4 space-y-4">
+                        <li><a href="#" class="text-base text-gray-400 hover:text-white">Avaliação</a></li>
+                        <li><a href="#" class="text-base text-gray-400 hover:text-white">Consultoria</a></li>
+                        <li><a href="#" class="text-base text-gray-400 hover:text-white">Administração</a></li>
+                        <li><a href="#" class="text-base text-gray-400 hover:text-white">Financiamento</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-300 tracking-wider uppercase">Empresa</h3>
+                    <ul class="mt-4 space-y-4">
+                        <li><a href="#" class="text-base text-gray-400 hover:text-white">Sobre nós</a></li>
+                        <li><a href="#" class="text-base text-gray-400 hover:text-white">Corretores</a></li>
+                        <li><a href="#" class="text-base text-gray-400 hover:text-white">Trabalhe conosco</a></li>
+                        <li><a href="#" class="text-base text-gray-400 hover:text-white">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-300 tracking-wider uppercase">Redes sociais</h3>
+                    <div class="mt-4 flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-facebook-f text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-linkedin-in text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-youtube text-xl"></i>
+                        </a>
+                    </div>
+                    <div class="mt-6">
+                        <h3 class="text-sm font-semibold text-gray-300 tracking-wider uppercase">Assine nossa newsletter</h3>
+                        <div class="mt-4 flex">
+                            <input type="email" placeholder="Seu email" class="px-4 py-2 border border-gray-600 rounded-l-md bg-gray-700 text-white focus:outline-none focus:ring-1 focus:ring-blue-500">
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-r-md">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12 border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between">
+                <p class="text-base text-gray-400">
+                    &copy; 2023 Terra Nova Imóveis. Todos os direitos reservados.
+                </p>
+                <div class="mt-4 md:mt-0 flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white">Termos de uso</a>
+                    <a href="#" class="text-gray-400 hover:text-white">Política de privacidade</a>
+                    <a href="#" class="text-gray-400 hover:text-white">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Admin Panel Modal -->
+    <div id="adminPanel" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-6xl sm:w-full">
+                <div class="bg-white">
+                    <div class="flex justify-between items-center border-b border-gray-200 px-6 py-4">
+                        <h3 class="text-xl font-bold text-gray-900">Painel Administrativo</h3>
+                        <button onclick="closeAdminPanel()" class="text-gray-400 hover:text-gray-500">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="flex h-screen">
+                        <!-- Sidebar -->
+                        <div class="w-64 bg-gray-800 text-white">
+                            <div class="p-4 flex items-center space-x-3 border-b border-gray-700">
+                                <div class="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center">
+                                    <i class="fas fa-user text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium">Admin</p>
+                                    <p class="text-xs text-gray-400">Administrador</p>
+                                </div>
+                            </div>
+                            <nav class="mt-4">
+                                <ul>
+                                    <li class="px-4 py-3 hover:bg-gray-700 cursor-pointer active">
+                                        <i class="fas fa-tachometer-alt mr-3"></i> Dashboard
+                                    </li>
+                                    <li class="px-4 py-3 hover:bg-gray-700 cursor-pointer">
+                                        <i class="fas fa-home mr-3"></i> Imóveis
+                                    </li>
+                                    <li class="px-4 py-3 hover:bg-gray-700 cursor-pointer">
+                                        <i class="fas fa-users mr-3"></i> Clientes
+                                    </li>
+                                    <li class="px-4 py-3 hover:bg-gray-700 cursor-pointer">
+                                        <i class="fas fa-comments mr-3"></i> Atendimento
+                                    </li>
+                                    <li class="px-4 py-3 hover:bg-gray-700 cursor-pointer">
+                                        <i class="fas fa-file-contract mr-3"></i> Contratos
+                                    </li>
+                                    <li class="px-4 py-3 hover:bg-gray-700 cursor-pointer">
+                                        <i class="fas fa-chart-line mr-3"></i> Relatórios
+                                    </li>
+                                    <li class="px-4 py-3 hover:bg-gray-700 cursor-pointer">
+                                        <i class="fas fa-cog mr-3"></i> Configurações
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        
+                        <!-- Main Content -->
+                        <div class="flex-1 overflow-y-auto">
+                            <div class="p-6">
+                                <div class="flex justify-between items-center mb-6">
+                                    <h4 class="text-lg font-bold text-gray-800">Dashboard</h4>
+                                    <div class="flex space-x-3">
+                                        <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium">
+                                            <i class="fas fa-plus mr-2"></i> Adicionar Imóvel
+                                        </button>
+                                        <button class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md text-sm font-medium">
+                                            <i class="fas fa-sync-alt mr-2"></i> Atualizar
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Stats Cards -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                                    <div class="bg-white rounded-lg shadow p-6 border-l-4 border-blue-500">
+                                        <div class="flex items-center">
+                                            <div class="p-3 rounded-full bg-blue-100 text-blue-500 mr-4">
+                                                <i class="fas fa-home text-xl"></i>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm text-gray-500">Imóveis Cadastrados</p>
+                                                <p class="text-2xl font-bold">1,248</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-white rounded-lg shadow p-6 border-l-4 border-green-500">
+                                        <div class="flex items-center">
+                                            <div class="p-3 rounded-full bg-green-100 text-green-500 mr-4">
+                                                <i class="fas fa-handshake text-xl"></i>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm text-gray-500">Vendas Este Mês</p>
+                                                <p class="text-2xl font-bold">42</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-white rounded-lg shadow p-6 border-l-4 border-yellow-500">
+                                        <div class="flex items-center">
+                                            <div class="p-3 rounded-full bg-yellow-100 text-yellow-500 mr-4">
+                                                <i class="fas fa-users text-xl"></i>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm text-gray-500">Clientes Ativos</p>
+                                                <p class="text-2xl font-bold">356</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-white rounded-lg shadow p-6 border-l-4 border-red-500">
+                                        <div class="flex items-center">
+                                            <div class="p-3 rounded-full bg-red-100 text-red-500 mr-4">
+                                                <i class="fas fa-comments text-xl"></i>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm text-gray-500">Mensagens Não Lidas</p>
+                                                <p class="text-2xl font-bold">12</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Recent Properties -->
+                                <div class="bg-white rounded-lg shadow overflow-hidden mb-6">
+                                    <div class="px-6 py-4 border-b border-gray-200">
+                                        <h5 class="font-bold text-gray-800">Imóveis Recentes</h5>
+                                    </div>
+                                    <div class="divide-y divide-gray-200">
+                                        <div class="grid grid-cols-12 gap-4 p-4 hover:bg-gray-50">
+                                            <div class="col-span-2">
+                                                <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Property" class="w-full h-20 object-cover rounded">
+                                            </div>
+                                            <div class="col-span-6">
+                                                <p class="font-medium">Mansão em Alphaville</p>
+                                                <p class="text-sm text-gray-500">Barueri - SP</p>
+                                                <div class="flex mt-1 text-xs text-gray-500 space-x-2">
+                                                    <span><i class="fas fa-bed mr-1"></i> 5</span>
+                                                    <span><i class="fas fa-bath mr-1"></i> 4</span>
+                                                    <span><i class="fas fa-ruler-combined mr-1"></i> 680m²</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-span-2">
+                                                <p class="text-lg font-bold text-blue-600">R$ 5.200.000</p>
+                                            </div>
+                                            <div class="col-span-2 flex items-center justify-end space-x-2">
+                                                <button class="p-2 text-blue-500 hover:text-blue-700">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="p-2 text-red-500 hover:text-red-700">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="grid grid-cols-12 gap-4 p-4 hover:bg-gray-50">
+                                            <div class="col-span-2">
+                                                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Property" class="w-full h-20 object-cover rounded">
+                                            </div>
+                                            <div class="col-span-6">
+                                                <p class="font-medium">Apartamento Duplex</p>
+                                                <p class="text-sm text-gray-500">Moema - SP</p>
+                                                <div class="flex mt-1 text-xs text-gray-500 space-x-2">
+                                                    <span><i class="fas fa-bed mr-1"></i> 3</span>
+                                                    <span><i class="fas fa-bath mr-1"></i> 2</span>
+                                                    <span><i class="fas fa-ruler-combined mr-1"></i> 120m²</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-span-2">
+                                                <p class="text-lg font-bold text-blue-600">R$ 1.850.000</p>
+                                            </div>
+                                            <div class="col-span-2 flex items-center justify-end space-x-2">
+                                                <button class="p-2 text-blue-500 hover:text-blue-700">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="p-2 text-red-500 hover:text-red-700">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="grid grid-cols-12 gap-4 p-4 hover:bg-gray-50">
+                                            <div class="col-span-2">
+                                                <img src="https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Property" class="w-full h-20 object-cover rounded">
+                                            </div>
+                                            <div class="col-span-6">
+                                                <p class="font-medium">Fazenda Produtiva</p>
+                                                <p class="text-sm text-gray-500">Ituverava - SP</p>
+                                                <div class="flex mt-1 text-xs text-gray-500 space-x-2">
+                                                    <span><i class="fas fa-bed mr-1"></i> 6</span>
+                                                    <span><i class="fas fa-bath mr-1"></i> 4</span>
+                                                    <span><i class="fas fa-ruler-combined mr-1"></i> 120ha</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-span-2">
+                                                <p class="text-lg font-bold text-blue-600">R$ 3.750.000</p>
+                                            </div>
+                                            <div class="col-span-2 flex items-center justify-end space-x-2">
+                                                <button class="p-2 text-blue-500 hover:text-blue-700">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="p-2 text-red-500 hover:text-red-700">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="px-6 py-3 bg-gray-50 text-right">
+                                        <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                            Ver todos os imóveis <i class="fas fa-arrow-right ml-1"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Customer Service -->
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                    <div class="bg-white rounded-lg shadow overflow-hidden">
+                                        <div class="px-6 py-4 border-b border-gray-200">
+                                            <h5 class="font-bold text-gray-800">Últimas Mensagens</h5>
+                                        </div>
+                                        <div class="divide-y divide-gray-200">
+                                            <div class="p-4 hover:bg-gray-50 cursor-pointer">
+                                                <div class="flex items-start">
+                                                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-500">
+                                                        <i class="fas fa-user"></i>
+                                                    </div>
+                                                    <div class="ml-4 flex-1">
+                                                        <div class="flex items-center justify-between">
+                                                            <p class="text-sm font-medium text-gray-900">Carlos Silva</p>
+                                                            <p class="text-xs text-gray-500">2 horas atrás</p>
+                                                        </div>
+                                                        <p class="text-sm text-gray-500 truncate">Olá, gostaria de agendar uma visita ao apartamento em Moema...</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="p-4 hover:bg-gray-50 cursor-pointer">
+                                                <div class="flex items-start">
+                                                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-500">
+                                                        <i class="fas fa-user"></i>
+                                                    </div>
+                                                    <div class="ml-4 flex-1">
+                                                        <div class="flex items-center justify-between">
+                                                            <p class="text-sm font-medium text-gray-900">Ana Paula</p>
+                                                            <p class="text-xs text-gray-500">5 horas atrás</p>
+                                                        </div>
+                                                        <p class="text-sm text-gray-500 truncate">Bom dia, estou interessada na fazenda em Ituverava...</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="p-4 hover:bg-gray-50 cursor-pointer">
+                                                <div class="flex items-start">
+                                                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-green-500">
+                                                        <i class="fas fa-user"></i>
+                                                    </div>
+                                                    <div class="ml-4 flex-1">
+                                                        <div class="flex items-center justify-between">
+                                                            <p class="text-sm font-medium text-gray-900">Roberto Almeida</p>
+                                                            <p class="text-xs text-gray-500">Ontem</p>
+                                                        </div>
+                                                        <p class="text-sm text-gray-500 truncate">Preciso de informações sobre financiamento para a casa em...</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="px-6 py-3 bg-gray-50 text-right">
+                                            <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                                Ver todas as mensagens <i class="fas fa-arrow-right ml-1"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-white rounded-lg shadow overflow-hidden">
+                                        <div class="px-6 py-4 border-b border-gray-200">
+                                            <h5 class="font-bold text-gray-800">Chat de Atendimento</h5>
+                                        </div>
+                                        <div class="chat-window overflow-y-auto p-4">
+                                            <div class="flex items-start mb-4">
+                                                <div class="flex-shrink-0 h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center">
+                                                    <i class="fas fa-user text-gray-600"></i>
+                                                </div>
+                                                <div class="ml-3 max-w-xs lg:max-w-md">
+                                                    <div class="bg-gray-100 rounded-lg py-2 px-4">
+                                                        <p class="text-sm text-gray-800">Olá, gostaria de saber mais sobre o apartamento em Moema.</p>
+                                                    </div>
+                                                    <p class="text-xs text-gray-500 mt-1">Cliente - 10:15 AM</p>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-start mb-4 justify-end">
+                                                <div class="max-w-xs lg:max-w-md">
+                                                    <div class="bg-blue-100 rounded-lg py-2 px-4">
+                                                        <p class="text-sm text-gray-800">Bom dia! O apartamento está disponível para visitação. Posso agendar para você?</p>
+                                                    </div>
+                                                    <p class="text-xs text-gray-500 mt-1 text-right">Você - 10:16 AM</p>
+                                                </div>
+                                                <div class="ml-3 flex-shrink-0 h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center">
+                                                    <i class="fas fa-user-tie text-white"></i>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-start mb-4">
+                                                <div class="flex-shrink-0 h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center">
+                                                    <i class="fas fa-user text-gray-600"></i>
+                                                </div>
+                                                <div class="ml-3 max-w-xs lg:max-w-md">
+                                                    <div class="bg-gray-100 rounded-lg py-2 px-4">
+                                                        <p class="text-sm text-gray-800">Sim, por favor. Estou disponível na quarta-feira à tarde.</p>
+                                                    </div>
