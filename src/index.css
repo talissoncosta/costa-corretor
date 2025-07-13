@@ -1,0 +1,23 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 2rem;
+}
+
+.app-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.property-manager input,
+.property-manager textarea {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+}
+
+.property-manager button {
+  padding: 0.5rem 1rem;
+  margin-top: 0.5rem;
+}
